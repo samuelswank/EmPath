@@ -1,0 +1,12 @@
+[project]
+name = "empath"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "django>=6.0.4",
+    "flaskwebgui>=1.1.9",
+    "waitress>=3.0.2",
+    "whitenoise>=6.12.0",
+]
