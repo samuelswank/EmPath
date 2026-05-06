@@ -1,0 +1,11 @@
+{% load static %}
+<title>Rutiger</title>
+{% block body %}
+{% endblock %}
+<script type="text/javascript" src="{% static 'SearchTracker/scripts/jQuery/jquery.js' %}"></script>
+<script type="text/javascript">
+  window.addEventListener("beforeunload", () => {
+    // fetch("{% url 'SearchTracker:close' %}", { keepalive: true });
+    navigator.sendBeacon("{% url 'SearchTracker:close' %}", "");
+  });
+</script>
