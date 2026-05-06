@@ -10,7 +10,7 @@ wheels/
 .venv
 
 # database
-db.sqlite
+db.sqlite3
 
 # media files
 ./media 
