@@ -1,5 +1,36 @@
 {% extends "SearchTracker/base.html" %}
+{% load static %}
 {% block title %} - We Turn Drones into Engineers{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'SearchTracker/styles/dashboard.css' %}">
+{% endblock %}
 {% block body %}
-<a class="a-button" href="{% url 'SearchTracker:close' %}">Close</a>
+<div class="row mt-3 intro pt-2 pb-2">
+  <div class="row">
+    <div class="col-8 mx-auto">
+      <div class="d-flex flex-row justify-content-center">
+        <img src="{% static 'SearchTracker/images/icons/empath.png' %}" alt="Empath Icon">
+      </div>
+    </div>
+  </div>
+  <div class="text-center">
+    <h1>At EmPath</h1>
+    <h2>We Help You Go</h2>
+  </div>
+  <div class="row">
+    <div class="col-8 mx-auto">
+      <div class="d-flex flex-row justify-content-around">
+        <div class="d-flex flex-column justify-content-center">
+          <p>From This</p>
+        </div>
+        <img src="{% static 'SearchTracker/images/icons/drone-male.png' %}" alt="Male Drone Icon">
+        {% include "SearchTracker/components/svg/arrow-right.html" %}
+        <img src="{% static 'SearchTracker/images/icons/engineer.png' %}" alt="Engineer Icon">
+        <div class="d-flex flex-column justify-content-center">
+          <p>To This</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

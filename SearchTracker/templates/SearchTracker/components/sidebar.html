@@ -1,7 +1,7 @@
 {% load bootstrap_icons %}
 <div class="d-flex flex-column flex-shrink-0 p-3 sidebar col-4 sidebar-fixed">
   <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto" id="logo" href="{% url 'SearchTracker:dashboard' %}">
-    {% include "SearchTracker/components/EmPath.html" %}
+    {% include "SearchTracker/components/svg/EmPath.html" %}
     <p id="p-logo">EmPath - Turning Drones into Engineers</p>
   </a>
   <hr>
@@ -31,5 +31,10 @@
       </a>
     </li>
   </ul>
+  <ul class="nav nav-pills flex-column mt-auto">
+    <a class="nav-link" href="{% url 'SearchTracker:close' %}">
+      {% bs_icon "door-closed" %}
+      Close Program
+    </a>
+  </ul>
 </div>
-<div class="b-example-divider"></div>
