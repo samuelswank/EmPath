@@ -6,6 +6,8 @@ readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "django>=6.0.4",
+    "django-bootstrap-icons>=0.9.0",
+    "django-bootstrap5>=26.2",
     "flaskwebgui>=1.1.9",
     "waitress>=3.0.2",
     "whitenoise>=6.12.0",
