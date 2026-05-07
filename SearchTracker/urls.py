@@ -4,6 +4,6 @@ from . import views
 app_name = "SearchTracker"
 
 urlpatterns = [
-    path('', views.index, name="index"),
+    path('', views.dashboard, name="dashboard"),
     path("close/", views.close, name="close"),
 ]

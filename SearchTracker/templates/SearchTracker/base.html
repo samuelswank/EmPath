@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% load django_bootstrap5 %}
+  {% bootstrap_css %}
+  <title>EmPath {% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'SearchTracker/styles/base.css' %}">
+  <link rel="stylesheet" href="{% static 'SearchTracker/styles/sidebar.css' %}">
+  {% block styles %}{% endblock %}
+</head>
+
+<body>
+  <main>
+    {% include "SearchTracker/components/sidebar.html" %}
+    <div class="col-8 offset-4 main-content">
+      {% block body %}
+      {% endblock %}
+    </div>
+  </main>
+  {% bootstrap_javascript %}
+</body>
+
+</html>
