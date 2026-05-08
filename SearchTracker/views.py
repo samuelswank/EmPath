@@ -1,12 +1,16 @@
-from django.shortcuts import render
-import signal
+
 import os
+import signal
+from django.shortcuts import render
+from django.views.generic import TemplateView
 
 # Create your views here.
 
+# Class based views
 
-def dashboard(request):
-    return render(request, "SearchTracker/dashboard.html")
+
+class HomeTemplateView(TemplateView):
+    template_name = "SearchTracker/home.html"
 
 
 def close(request):

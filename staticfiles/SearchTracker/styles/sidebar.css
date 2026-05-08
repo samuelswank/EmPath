@@ -7,9 +7,10 @@
 .sidebar-fixed {
   position: fixed;
   top: 0;
-  bottom: 0;
   left: 0;
-  overflow-y: auto; /* allows scrolling if sidebar content is taller than viewport */
+  width: 280px; /* as defined in .sidebar */
+  height: 100vh;
+  overflow-y: auto;
 }
 
 #logo {
@@ -20,8 +21,13 @@
 }
 
 #p-logo {
-  color: var(--color);
+  color: var(--color-nav);
   text-align: center;
+}
+
+#p-logo:active,
+#p-logo:hover {
+  color: var(--color-nav-active);
 }
 
 .nav-link {

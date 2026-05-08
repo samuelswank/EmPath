@@ -1,0 +1,75 @@
+.intro {
+  background-color: var(--background-color-lighter);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  margin: 0 1rem;
+  padding-bottom: 1rem;
+}
+
+.intro p {
+  font-size: 24px;
+}
+
+#svg-arrow {
+  width: 5rem;
+}
+
+#svg-arrow path {
+  fill: var(--color);
+}
+
+.main-content hr {
+  display: block;
+  width: 80% !important;
+  margin: 1rem auto;
+}
+
+.centered {
+  margin: auto;
+  width: 95%;
+}
+
+.intro .p-body {
+  text-indent: 1rem;
+  font-size: 16px;
+  color: #b8c7dd;
+}
+
+.intro h1 {
+  font-size: 2rem;
+}
+
+.intro h2 {
+  font: 1.75rem;
+}
+
+.intro h3,
+.intro .h3-section {
+  font-size: 1.5rem;
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  text-align: left;
+}
+
+.intro .h3-section::before {
+  width: 1.25em;
+  line-height: 0;
+  content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%28184%2C199%2C221%2C1%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+  transition: transform 0.35s ease;
+  transform-origin: 0.5em 50%;
+  display: inline-block;
+}
+
+.intro .h3-section[aria-expanded="true"]::before {
+  transform: rotate(90deg);
+}
+
+.intro ul li {
+  text-indent: 1rem;
+  list-style: none;
+}

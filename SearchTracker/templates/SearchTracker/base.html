@@ -16,12 +16,14 @@
 <body>
   <main>
     {% include "SearchTracker/components/sidebar.html" %}
-    <div class="col-8 offset-3 main-content">
+    <div class="main-content">
       {% block body %}
       {% endblock %}
     </div>
   </main>
   {% bootstrap_javascript %}
+  {% include "SearchTracker/components/jquery.html" %}
+  <script type="text/javascript" src="{% static 'SearchTracker/scripts/logo-hover.js' %}"></script>
 </body>
 
 </html>
