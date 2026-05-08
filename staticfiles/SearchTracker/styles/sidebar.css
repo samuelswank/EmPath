@@ -25,6 +25,7 @@
   text-align: center;
 }
 
+#logo:hover #p-logo,
 #p-logo:active,
 #p-logo:hover {
   color: var(--color-nav-active);
