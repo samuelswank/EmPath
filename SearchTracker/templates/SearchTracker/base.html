@@ -17,11 +17,17 @@
   <main>
     {% include "SearchTracker/components/sidebar.html" %}
     <div class="main-content">
-      {% block body %}
-      {% endblock %}
+      {% block body %}{% endblock %}
     </div>
   </main>
   {% bootstrap_javascript %}
+  {% block scripts %}{% endblock %}
+  <script>
+    window.addEventListener('beforeunload', () => {
+      const closeUrl = "{% url 'SearchTracker:close' %}";
+      navigator.sendBeacon(closeUrl, "");
+    });
+  </script>
 </body>
 
 </html>
