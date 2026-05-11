@@ -47,9 +47,20 @@ class Title(TimeStampedModel):
         return self.title
 
 
-class Resume(TimeStampedModel):
+class Document(TimeStampedModel):
+    class DocumentTypeOptions(Enum):
+        COVER_LETTER = "Cover Letter"
+        RESUME = "Resume"
+        OTHER = "Other"
+
+        @classmethod
+        def choices(self):
+            return [(key.value, key.name) for key in self]
+
     name = models.CharField(max_length=128)
     file = models.FileField()
+    document_type = models.CharField(
+        max_length=16, choices=DocumentTypeOptions.choices(), default=DocumentTypeOptions.RESUME)
 
     resume_title = models.ManyToManyField(
         "ResumeTitle", related_name="resume_title")
@@ -100,7 +111,7 @@ class JobApplication(TimeStampedModel):
     status = models.CharField(
         max_length=16, choices=StatusOptions.choices(), default=StatusOptions.SOURCED)
     resume = models.ForeignKey(
-        Resume, on_delete=models.CASCADE, blank=True, null=True)
+        Document, on_delete=models.CASCADE, blank=True, null=True)
     notes = HTMLField()
 
     job_application_location = models.ManyToManyField(
@@ -205,7 +216,7 @@ class Location(TimeStampedModel):
 
 
 class ResumeTitle(TimeStampedModel):
-    resume = models.ForeignKey(Resume, on_delete=models.CASCADE)
+    resume = models.ForeignKey(Document, on_delete=models.CASCADE)
     title = models.ForeignKey(Title, on_delete=models.CASCADE)
 
     def __str__(self):

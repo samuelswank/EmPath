@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{% static 'SearchTracker/styles/home.css' %}">
 {% endblock %}
 {% block body %}
-<div class="row mt-3 intro pt-2 pb-2">
+<div class="row mt-3 mb-3 intro pt-2 pb-2">
   <div class="row">
     <div class="col-8 mx-auto">
       <div class="d-flex flex-row justify-content-center">
@@ -35,10 +35,10 @@
   <hr>
   <div class="row mb-3 centered">
     <p class="p-body">
-      EmPath, short for <i>Employment Pathway</i>, is a cross-platform desktop program for keeping track of Software
-      Engineers' job applications. We don't guarantee that you will become a <i>Transcend</i>, but we can at least
-      help you on your <i>Employment Pathway</i> to become a gainfully-employed and productive CRUD monkey for a startup
-      or maybe the next <i>Morgan Polysoft</i>. The program calculates weekly job search KPIs which are displayed in the
+      EmPath, short for <i>Employment Pathway</i>, is a cross-platform desktop program for keeping track of a Software
+      Engineer's job applications. We don't guarantee that you will become a <i>Transcend</i>, but we can at least
+      help you on <i>your</i> Employment Pathway to become a gainfully-employed and productive code monkey for a startup
+      or maybe even <i>Morgan Polysoft</i>. The program calculates weekly job search KPIs which are displayed in the
       <strong>Dashboard</strong>. <strong>Applications</strong>, <strong>Documents</strong>, and <strong>Contacts</strong>
       are viewed in their correspoinding windows. Some actions are also performed on the <strong>Admin Panel</strong>.
     </p>
@@ -53,7 +53,7 @@
         <li>Cover Letters Written</li>
         <li>Informational Interviews Scheduled / Held</li>
         <li>New Contacts</li>
-        <li>Coding Challenge Goal Met</li>
+        <li>Coding Challenge Goals Met</li>
         <li>etc.</li>
       </ul>
     </div>
@@ -85,7 +85,6 @@
         <li>Snippets for copy-pasting into online forms</li>
       </ul>
     </div>
-    <button class="h3-section" data-bs-toggle="collapse" data-bs-target="#contacts-collapse">Contacts</button>
     <p class="p-body collapse" id="contacts-collapse">
       Rate contacts based on their helpfulness in your job search. All start out by deafault as <i>Workers</i>,
       but if they are insightful in an informational interview, you can set their status to <i>Engineer</i>, or if they
@@ -97,7 +96,7 @@
     <button class="h3-section" data-bs-toggle="collapse" data-bs-target="#admin-panel-collapse">Admin Panel</button>
     <p class="p-body collapse" id="admin-panel-collapse">
       EmPath is built with Python, Django, and FlaskWebGUI. As such, the user has access to Django's built-in
-      <strong>Admin Panel</strong>. Some CRUD operations may be performed here; others may be performed on the
+      <strong>Admin Panel</strong>. Some CRUD operations may be performed there; others may be performed on the
       appropriate window.
     </p>
   </div>

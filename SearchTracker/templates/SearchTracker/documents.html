@@ -1,0 +1,94 @@
+{% extends "SearchTracker/base.html" %}
+{% load static %}
+{% block title %} - Documents{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'SearchTracker/styles/table.css' %}">
+<!-- <link rel="stylesheet" href="{% static 'SearchTracker/styles/documents.css' %}"> -->
+{% endblock %}
+{% block body %}
+{% csrf_token %}
+<h1 class="text-center">Documents</h1>
+<div class="col-10 mx-auto">
+  <div class="d-flex justify-content-between align-items-center">
+    <h2>Files (PDFs)</h2>
+    <a class="a-button" href="{{ add_document_url }}">Add</a>
+  </div>
+  <table class="table table-dark mb-2">
+    {% if documents_count > 0 %}
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Update</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    {% endif %}
+    <tbody>
+      {% for document in documents %}
+      <tr>
+        <td id="document-name-{{ document.pk }}">
+          {{ document.name }}
+        </td>
+        <td>
+          {{ document.document_type }}
+        </td>
+        <td>
+          <a class="a-button a-button-update" href="/admin/SearchTracker/document/{{ document.pk }}/change">
+            Update
+          </a>
+        </td>
+        <td><a id="delete-document-{{ document.pk }}" class="a-button a-button-delete" href="">Delete</a></td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="100">You currently have no saved (PDF) documents.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-between align-items-center">
+    <h2>Snippets</h2>
+    <a class="a-button" href="{{ add_snippet_url }}">Add</a>
+  </div>
+  <table class="table table-dark mb-2">
+    {% if snippets_count > 0 %}
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Update</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    {% endif %}
+    <tbody>
+      {% for snippet in snippets %}
+      <tr>
+        <td id="snippet-name-{{ snippet.pk }}">
+          {{ snippet.name }}
+        </td>
+        <td>
+          {{ snippet.snippet_type }}
+        </td>
+        <td>
+          <a class="a-button a-button-update" href="/admin/SearchTracker/templatesnippet/{{ snippet.pk }}/change">
+            Update
+          </a>
+        </td>
+        <td><a id="delete-snippet-{{ snippet.pk }}" class="a-button a-button-delete" href="">Delete</a></td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="100">You currently have n saved snippets.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+{% block scripts %}
+{% include "SearchTracker/components/jquery.html" %}
+<script type="text/javascript" src="{% static 'SearchTracker/scripts/utils/csrf.js' %}"></script>
+<script type="text/javascript" src="{% static 'SearchTracker/scripts/delete-modal.js' %}"></script>
+{% endblock %}

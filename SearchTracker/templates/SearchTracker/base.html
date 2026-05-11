@@ -22,12 +22,6 @@
   </main>
   {% bootstrap_javascript %}
   {% block scripts %}{% endblock %}
-  <script>
-    window.addEventListener('beforeunload', () => {
-      const closeUrl = "{% url 'SearchTracker:close' %}";
-      navigator.sendBeacon(closeUrl, "");
-    });
-  </script>
 </body>
 
 </html>

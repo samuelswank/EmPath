@@ -16,6 +16,15 @@
   --color-button-bright: #87acd5;
   --color-button-dark: #1a232a;
 
+  --background-color-button-update-dark: #4f220c;
+  --background-color-button-update-light: #be5906;
+  --color-button-update-bright: #ad552f;
+  --color-button-update-dark: #3b0801;
+
+  --background-color-button-delete-dark: #77050e;
+  --background-color-button-delete-light: #920207;
+  --color-button-delete: #030000;
+
   --fw-regular: 400;
   --fw-medium: 500;
   --fw-semibold: 600;
@@ -57,7 +66,29 @@ hr {
   padding: 0.25rem 0.5rem;
 }
 
-.a-button:hover {
+.a-button:hover,
+.a-button:active {
   background-color: var(--background-color-button-bright);
   color: var(--color-button-dark);
+}
+
+.a-button-update {
+  background-color: var(--background-color-button-update-dark);
+  color: var(--color-button-update-bright);
+}
+
+.a-button-update:hover,
+.a-button-updat:active {
+  background-color: var(--background-color-button-update-light);
+  color: var(--color-button-update-dark);
+}
+
+.a-button-delete {
+  background-color: var(--background-color-button-delete-dark);
+  color: var(--color-button-delete);
+}
+
+.a-button-delete:hover,
+.a-button-delete:active {
+  background-color: var(--background-color-button-delete-light);
 }
