@@ -6,8 +6,6 @@ $(() => {
 
     const csrftoken = getCsrfTokenFromPage();
 
-    console.log(csrftoken);
-
     const anchorId = event.target.id;
     const anchorIdSubstrings = anchorId.split("-");
 
@@ -18,10 +16,8 @@ $(() => {
 
     recordType = capitalizeFirstLetter(recordType);
 
-    const title = "A careful review of your options is in order.";
+    const title = "Perhaps a careful review of your options is in order.";
     const body = `Are you sure that you wish to delete <strong>${recordType}</strong> with id = <i>${recordId}</i>, <strong>${recordName}</strong>.`;
-
-    console.log(body);
 
     const modalHtml = `
     <div id="modal-element" class="modal fade" tabindex="-1">
@@ -34,7 +30,7 @@ $(() => {
                 <div class="modal-body">
                     <p>${body}</p>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="a-button" data-bs-dismiss="modal">Close</button>
                     <form action="/template-snippets/delete/id=${recordId}" method="post">
                         <input type="hidden" name="csrfmiddlewaretoken" value="${csrftoken}"></input>
@@ -53,13 +49,8 @@ $(() => {
 
     modal.show();
 
-    // modalElement.addEventListener(
-    //   "hidden.bs.modal",
-    //   () => {
-    //     $("#modal-element").remove();
-    //   },
-    //   { once: true },
-    // );
+    const audio = new Audio(window.DELETE_AUDIO_PATH);
+    audio.play();
   });
 });
 

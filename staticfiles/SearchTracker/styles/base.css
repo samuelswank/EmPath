@@ -58,6 +58,11 @@ hr {
   /* remove col-8, offset-3 from HTML */
 }
 
+button {
+  border: none;
+  outline: none;
+}
+
 .a-button {
   background-color: var(--background-color-button-dark);
   color: var(--color-button-bright);

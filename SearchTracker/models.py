@@ -151,6 +151,14 @@ class TemplateSnippet(TimeStampedModel):
 
 
 class Contact(TimeStampedModel):
+    class SexOptions(Enum):
+        MALE = "Male"
+        FEMALE = "Female"
+
+        @classmethod
+        def choices(self):
+            return [(key.value, key.name) for key in self]
+
     class RelationshipOptions(Enum):
         CLASSMATE = "Classmate"
         COWORKER = "Coworker"
@@ -192,6 +200,8 @@ class Contact(TimeStampedModel):
 
     given_name = models.CharField(max_length=64)
     surname = models.CharField(max_length=64, blank=True)
+    sex = models.CharField(
+        max_length=8, choices=SexOptions.choices(), default=SexOptions.MALE)
     relationship = models.CharField(max_length=32, choices=RelationshipOptions.choices(
     ), default=RelationshipOptions.PROFESSIONAL)
     primary_contact = models.CharField(max_length=200)
@@ -199,6 +209,11 @@ class Contact(TimeStampedModel):
         max_length=8, choices=ContactMethodOptions.choices())
     citizen_type = models.CharField(
         max_length=16, choices=CitizenClassOptions.choices(), default=CitizenClassOptions.WORKER)
+
+    employers = models.ManyToManyField(
+        Employer, related_name="contact_employers")
+    job_titles = models.ManyToManyField(
+        Title, related_name="contact_job_titles")
 
     def __str__(self):
         return f"{self.surname}, {self.given_name}"
