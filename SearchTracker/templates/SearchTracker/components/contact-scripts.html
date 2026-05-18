@@ -1,0 +1,8 @@
+{% csrf_token %}
+{% load static %}
+
+<script type="text/javascript" src="{% static 'SearchTracker/scripts/utils/csrf.js' %}"></script>
+<script>
+  window.OPEN_BROWSER_URL = "{% url 'SearchTracker:open_browser' %}";
+</script>
+<script type="text/javascript" src="{% static 'SearchTracker/scripts/utils/open-browser.js' %}"></script>

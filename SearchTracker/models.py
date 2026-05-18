@@ -2,6 +2,7 @@ from django.db import models
 from enum import Enum
 from tinymce.models import HTMLField
 from django.utils.html import strip_tags
+from django.template.defaultfilters import slugify
 
 # Create your models here.
 
@@ -41,7 +42,7 @@ class Title(TimeStampedModel):
         max_digits=8, decimal_places=2, blank=True, null=True)
 
     resumes_for_title = models.ManyToManyField(
-        "ResumeTitle", related_name="resumes_for_title")
+        "ResumeTitle", related_name="resumes_for_title", blank=True)
 
     def __str__(self):
         return self.title
@@ -131,7 +132,7 @@ class JobApplication(TimeStampedModel):
         super().save(*args, **kwargs)
 
 
-class TemplateSnippet(TimeStampedModel):
+class Snippet(TimeStampedModel):
     class SnippetTypeOptions(Enum):
         COVER_LETTER = "Cover Letter"
         DIRECT_MESSAGE = "Direct Message"
@@ -189,6 +190,7 @@ class Contact(TimeStampedModel):
         TECHNICIAN = "Technician"
         DOCTOR = "Doctor"
         LIBRARIAN = "Librarian"
+        ENGINEER = "Engineer"
         EMPATH = "Empath"
         THINKER = "Thinker"
         TRANSCEND = "Transcend"
@@ -210,13 +212,20 @@ class Contact(TimeStampedModel):
     citizen_type = models.CharField(
         max_length=16, choices=CitizenClassOptions.choices(), default=CitizenClassOptions.WORKER)
 
+    slug = models.SlugField(default='', blank=True, null=False)
+
     employers = models.ManyToManyField(
-        Employer, related_name="contact_employers")
+        Employer, related_name="contact_employers", blank=True)
     job_titles = models.ManyToManyField(
-        Title, related_name="contact_job_titles")
+        Title, related_name="contact_job_titles", blank=True)
 
     def __str__(self):
         return f"{self.surname}, {self.given_name}"
+
+    def save(self, *args, **kwargs):
+        full_name = f"{self.given_name} {self.surname}"
+        self.slug = slugify(full_name)
+        super().save(*args, **kwargs)
 
 
 class Location(TimeStampedModel):

@@ -1,13 +1,14 @@
 # import time
 # import threading
-from django.views.generic import ListView, TemplateView
-from .models import Contact, Document, TemplateSnippet
+from django.views.generic import DetailView, ListView, TemplateView
+from .models import Contact, Document, Snippet
 from .filters import ContactFilter
 from django.shortcuts import redirect, render
-from django.http import Http404
+from django.http import Http404, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+import webbrowser
 import os
 import signal
-from django.views.decorators.csrf import csrf_exempt
 
 
 # Create your views here.
@@ -16,9 +17,33 @@ from django.views.decorators.csrf import csrf_exempt
 
 APP_NAME = "SearchTracker"
 ADMIN_PREFIX = f"/admin/{APP_NAME}/"
-ICONS_PREFIX = "SearchTracker/images/icons/"
+ICONS_PREFIX = f"{APP_NAME}/images/icons/"
+AUDIO_PREFIX = f"{APP_NAME}/audio/"
 
 # variables
+
+contact_types = {
+    "Doctor": {"Male": f"{ICONS_PREFIX}doctor.png"},
+    "Drone": {"Female": f"{ICONS_PREFIX}drone-female.png", "Male": f"{ICONS_PREFIX}drone-male.png"},
+    "Empath": {"Female": f"{ICONS_PREFIX}empath.png"},
+    "Engineer": {"Male": f"{ICONS_PREFIX}engineer.png", "Female": f"{ICONS_PREFIX}engineer.png"},
+    "Librarian": {"Male": f"{ICONS_PREFIX}librarian.png"},
+    "Talent": {"Female": f"{ICONS_PREFIX}talent-female.png", "Male": f"{ICONS_PREFIX}talent-male.png"},
+    "Technician": {"Male": f"{ICONS_PREFIX}technician.png", "Female": f"{ICONS_PREFIX}technician.png"},
+    "Thinker": {"Male": f"{ICONS_PREFIX}thinker.png"},
+    "Transcend": {"Male": f"{ICONS_PREFIX}transcend.png", "Female": f"{ICONS_PREFIX}transcend.png"},
+    "Worker": {"Female": f"{ICONS_PREFIX}worker-female.png", "Male": f"{ICONS_PREFIX}worker-male.png"}
+}
+
+citizen_type_options_raw = Contact._meta.get_field(
+    "citizen_type").__dict__["_choices"]
+
+citizen_type_options = []
+
+for citizen_type in citizen_type_options_raw:
+    citizen_type_options.append(citizen_type[0])
+
+# utility vars
 # _last_heartbeat = time.time()
 # _heartbeat_lock = threading.Lock()
 # _watchdog_thread_started = False
@@ -77,27 +102,31 @@ class HomeTemplateView(TemplateView):
 
 class ContactListView(FilteredListView):
     model = Contact
+    context_object_name = "contacts"
     filterset_class = ContactFilter
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["add_url"] = f"{ADMIN_PREFIX}contact/add/"
 
-        context["contact_types"] = {
-            "Doctor": {"Male": f"{ICONS_PREFIX}doctor.png"},
-            "Drone": {"Female": f"{ICONS_PREFIX}drone-female.png", "Male": f"{ICONS_PREFIX}drone-male.png"},
-            "Empath": {"Female": f"{ICONS_PREFIX}empath.png"},
-            "Engineer": {"Male": f"{ICONS_PREFIX}engineer.png", "Female": f"{ICONS_PREFIX}engineer.png"},
-            "Librarian": {"Male": f"{ICONS_PREFIX}librarian.png"},
-            "Talent": {"Female": f"{ICONS_PREFIX}talent-female.png", "Male": f"{ICONS_PREFIX}talent-male.png"},
-            "Techician": {"Male": f"{ICONS_PREFIX}technician.png", "Female": f"{ICONS_PREFIX}technician.png"},
-            "Thinker": {"Male": f"{ICONS_PREFIX}thinker.png"},
-            "Transcend": {"Male": f"{ICONS_PREFIX}transcend.png", "Female": f"{ICONS_PREFIX}transcend.png"},
-            "Worker": {"Female": f"{ICONS_PREFIX}worker-female.png", "Male": f"{ICONS_PREFIX}worker-male.png"}
-        }
+        context["add_url"] = f"{ADMIN_PREFIX}contact/add/"
+        context["contact_types"] = contact_types
+        context["citizen_type_options"] = citizen_type_options
+        context["AUDIO_URL_PREFIX"] = AUDIO_PREFIX
 
         return context
 
+# DetailViews
+
+
+class ContactDetailView(DetailView):
+    model = Contact
+    context_object_name = "contact"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["contact_types"] = contact_types
+
+        return context
 
 # Delete Views
 
@@ -110,19 +139,19 @@ def documents(request):
         "documents": Document.objects.all(),
         "documents_count": Document.objects.count(),
         "add_document_url": f"{ADMIN_PREFIX}document/add/",
-        "snippets": TemplateSnippet.objects.all(),
-        "snippets_count": TemplateSnippet.objects.count(),
+        "snippets": Snippet.objects.all(),
+        "snippets_count": Snippet.objects.count(),
         "add_snippet_url": f"{ADMIN_PREFIX}templatesnippet/add/",
     })
 
 
-def delete_template_snippet(request, pk):
+def delete_snippet(request, pk):
     try:
-        template_snippet = TemplateSnippet.objects.get(pk=pk)
+        template_snippet = Snippet.objects.get(pk=pk)
         if request.method == "POST":
             template_snippet.delete()
             return redirect(f"{APP_NAME}:documents")
-    except TemplateSnippet.DoesNotExist:
+    except Snippet.DoesNotExist:
         raise Http404(f"Template Snippet with id={pk} does not exist")
 
 # utility views
@@ -135,6 +164,17 @@ def delete_template_snippet(request, pk):
 #         _last_heartbeat = time.time()
 #     _start_watchdog()
 #     return HttpResponse("Shutting down...")
+
+
+@csrf_exempt
+def open_browser(request):
+    if request.method == "POST":
+        url = request.POST.get("url")
+        if url:
+            webbrowser.open(url)
+            return HttpResponse(f"Browser successfully opened to {url}")
+
+    return HttpResponse("Invalid request", status=400)
 
 
 @csrf_exempt

@@ -1,0 +1,14 @@
+{% if contact.contact_method == "Phone" %}
+
+{{ contact.contact_method }}:
+
+{{ contact.primary_contact }}
+{% elif contact.contact_method == "Email" %}
+<a href="mailto:{{ contact.primary_contact }}">
+  {{ contact.contact_method }}
+</a>
+{% else %}
+<a href="/" onclick="openInBrowser('{{ contact.primary_contact }}')">
+  {{ contact.contact_method }}
+</a>
+{% endif %}

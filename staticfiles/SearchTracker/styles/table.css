@@ -9,3 +9,14 @@
   --bs-table-color: var(--color);
   --bs-table-border-color: var(--border-color);
 }
+
+table td,
+table th {
+  vertical-align: middle;
+}
+
+.table-icon {
+  width: 32px; /* Adjust as needed */
+  height: auto; /* Maintain aspect ratio */
+  vertical-align: middle;
+}
