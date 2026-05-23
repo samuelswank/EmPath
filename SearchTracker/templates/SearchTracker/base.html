@@ -1,11 +1,32 @@
 {% load static %}
-<title>Rutiger</title>
-{% block body %}
-{% endblock %}
-<script type="text/javascript" src="{% static 'SearchTracker/scripts/jQuery/jquery.js' %}"></script>
-<script type="text/javascript">
-  window.addEventListener("beforeunload", () => {
-    // fetch("{% url 'SearchTracker:close' %}", { keepalive: true });
-    navigator.sendBeacon("{% url 'SearchTracker:close' %}", "");
-  });
-</script>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% load django_bootstrap5 %}
+  {% bootstrap_css %}
+  <title>EmPath {% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'SearchTracker/styles/base.css' %}">
+  <link rel="stylesheet" href="{% static 'SearchTracker/styles/sidebar.css' %}">
+  {% block styles %}{% endblock %}
+</head>
+
+<body>
+  <main>
+    {% include "SearchTracker/components/sidebar.html" %}
+    <div class="main-content">
+      {% block body %}{% endblock %}
+      <footer class="py-3 my-4">
+        <p class="text-center text-wrap p-fine-print">
+          Developed by Pathway Electronics and Published by E-Tech Management under a joint contract with Morgan Industries.
+        </p>
+      </footer>
+    </div>
+  </main>
+  {% bootstrap_javascript %}
+  {% block scripts %}{% endblock %}
+</body>
+
+</html>

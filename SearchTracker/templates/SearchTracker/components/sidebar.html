@@ -1,0 +1,53 @@
+{% load bootstrap_icons %}
+<div class="d-flex flex-column flex-shrink-0 p-3 sidebar col-4 sidebar-fixed">
+  <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto" id="logo" href="{% url 'SearchTracker:home' %}">
+    {% include "SearchTracker/components/svg/EmPath.html" %}
+    <p id="p-logo">EmPath - Turning Drones into Engineers</p>
+  </a>
+  <hr>
+  <ul class="nav nav-pills flex-column mb-auto">
+    <li class="nav-item mb-2">
+      <a href="/" class="nav-link">
+        {% bs_icon "house" %}
+        Home
+      </a>
+    </li>
+    <li class="nav-item mb-2">
+      <a href="/" class="nav-link">
+        {% bs_icon "bar-chart-line" %}
+        Dashboard - KPIs
+      </a>
+    </li>
+    <li class="nav-item mb-2">
+      <a href="" class="nav-link">
+        {% bs_icon "file-ruled" %}
+        Applications
+      </a>
+    </li>
+    <li class="nav-item mb-2">
+      <a class="nav-link" href="{% url 'SearchTracker:documents' %}">
+        {% bs_icon "filetype-pdf" %}
+        Documents
+      </a>
+    </li>
+    <li class="nav-item mb-2">
+      <a href="{% url 'SearchTracker:contacts' %}" class="nav-link">
+        {% bs_icon "person-badge" %}
+        Contacts
+      </a>
+    </li>
+    <li class="nav-item mb-2">
+      <a href="/admin/" class="nav-link">
+        {% bs_icon "briefcase" %}
+        Admin Panel
+      </a>
+    </li>
+  </ul>
+  <hr>
+  <ul class="nav nav-pills flex-column mt-auto">
+    <a class="nav-link" href="{% url 'SearchTracker:close' %}">
+      {% bs_icon "door-closed" %}
+      Close Program
+    </a>
+  </ul>
+</div>

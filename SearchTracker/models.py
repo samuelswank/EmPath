@@ -2,6 +2,7 @@ from django.db import models
 from enum import Enum
 from tinymce.models import HTMLField
 from django.utils.html import strip_tags
+from django.template.defaultfilters import slugify
 
 # Create your models here.
 
@@ -41,15 +42,26 @@ class Title(TimeStampedModel):
         max_digits=8, decimal_places=2, blank=True, null=True)
 
     resumes_for_title = models.ManyToManyField(
-        "ResumeTitle", related_name="resumes_for_title")
+        "ResumeTitle", related_name="resumes_for_title", blank=True)
 
     def __str__(self):
         return self.title
 
 
-class Resume(TimeStampedModel):
+class Document(TimeStampedModel):
+    class DocumentTypeOptions(Enum):
+        COVER_LETTER = "Cover Letter"
+        RESUME = "Resume"
+        OTHER = "Other"
+
+        @classmethod
+        def choices(self):
+            return [(key.value, key.name) for key in self]
+
     name = models.CharField(max_length=128)
     file = models.FileField()
+    document_type = models.CharField(
+        max_length=16, choices=DocumentTypeOptions.choices(), default=DocumentTypeOptions.RESUME)
 
     resume_title = models.ManyToManyField(
         "ResumeTitle", related_name="resume_title")
@@ -100,7 +112,7 @@ class JobApplication(TimeStampedModel):
     status = models.CharField(
         max_length=16, choices=StatusOptions.choices(), default=StatusOptions.SOURCED)
     resume = models.ForeignKey(
-        Resume, on_delete=models.CASCADE, blank=True, null=True)
+        Document, on_delete=models.CASCADE, blank=True, null=True)
     notes = HTMLField()
 
     job_application_location = models.ManyToManyField(
@@ -120,7 +132,7 @@ class JobApplication(TimeStampedModel):
         super().save(*args, **kwargs)
 
 
-class TemplateSnippet(TimeStampedModel):
+class Snippet(TimeStampedModel):
     class SnippetTypeOptions(Enum):
         COVER_LETTER = "Cover Letter"
         DIRECT_MESSAGE = "Direct Message"
@@ -140,6 +152,14 @@ class TemplateSnippet(TimeStampedModel):
 
 
 class Contact(TimeStampedModel):
+    class SexOptions(Enum):
+        MALE = "Male"
+        FEMALE = "Female"
+
+        @classmethod
+        def choices(self):
+            return [(key.value, key.name) for key in self]
+
     class RelationshipOptions(Enum):
         CLASSMATE = "Classmate"
         COWORKER = "Coworker"
@@ -170,6 +190,7 @@ class Contact(TimeStampedModel):
         TECHNICIAN = "Technician"
         DOCTOR = "Doctor"
         LIBRARIAN = "Librarian"
+        ENGINEER = "Engineer"
         EMPATH = "Empath"
         THINKER = "Thinker"
         TRANSCEND = "Transcend"
@@ -181,6 +202,8 @@ class Contact(TimeStampedModel):
 
     given_name = models.CharField(max_length=64)
     surname = models.CharField(max_length=64, blank=True)
+    sex = models.CharField(
+        max_length=8, choices=SexOptions.choices(), default=SexOptions.MALE)
     relationship = models.CharField(max_length=32, choices=RelationshipOptions.choices(
     ), default=RelationshipOptions.PROFESSIONAL)
     primary_contact = models.CharField(max_length=200)
@@ -189,8 +212,20 @@ class Contact(TimeStampedModel):
     citizen_type = models.CharField(
         max_length=16, choices=CitizenClassOptions.choices(), default=CitizenClassOptions.WORKER)
 
+    slug = models.SlugField(default='', blank=True, null=False)
+
+    employers = models.ManyToManyField(
+        Employer, related_name="contact_employers", blank=True)
+    job_titles = models.ManyToManyField(
+        Title, related_name="contact_job_titles", blank=True)
+
     def __str__(self):
         return f"{self.surname}, {self.given_name}"
+
+    def save(self, *args, **kwargs):
+        full_name = f"{self.given_name} {self.surname}"
+        self.slug = slugify(full_name)
+        super().save(*args, **kwargs)
 
 
 class Location(TimeStampedModel):
@@ -205,7 +240,7 @@ class Location(TimeStampedModel):
 
 
 class ResumeTitle(TimeStampedModel):
-    resume = models.ForeignKey(Resume, on_delete=models.CASCADE)
+    resume = models.ForeignKey(Document, on_delete=models.CASCADE)
     title = models.ForeignKey(Title, on_delete=models.CASCADE)
 
     def __str__(self):

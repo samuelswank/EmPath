@@ -1,0 +1,22 @@
+.table-dark th {
+  color: #87acd5; /* your button‑bright color */
+  font-weight: var(--fw-semibold);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table-dark {
+  --bs-table-bg: var(--background-color-lighter);
+  --bs-table-color: var(--color);
+  --bs-table-border-color: var(--border-color);
+}
+
+table td,
+table th {
+  vertical-align: middle;
+}
+
+.table-icon {
+  width: 32px; /* Adjust as needed */
+  height: auto; /* Maintain aspect ratio */
+  vertical-align: middle;
+}

@@ -39,8 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "SearchTracker",
-    "tinymce",
+    "django_bootstrap5",
+    "django_bootstrap_icons",
     "django_cleanup",
+    "rest_framework",
+    "tinymce",
 ]
 
 MIDDLEWARE = [

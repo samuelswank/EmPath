@@ -1,0 +1,104 @@
+{% extends "SearchTracker/base.html" %}
+{% load static %}
+{% block title %} - We Turn Drones into Engineers{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'SearchTracker/styles/home.css' %}">
+{% endblock %}
+{% block body %}
+<div class="row mt-3 mb-3 intro pt-2 pb-2">
+  <div class="row">
+    <div class="col-8 mx-auto">
+      <div class="d-flex flex-row justify-content-center">
+        <img src="{% static 'SearchTracker/images/icons/empath.png' %}" alt="Empath Icon">
+      </div>
+    </div>
+  </div>
+  <div class="text-center">
+    <h1>At EmPath</h1>
+    <h2>We Help You Go</h2>
+  </div>
+  <div class="row mb-3">
+    <div class="col-8 mx-auto">
+      <div class="d-flex flex-row justify-content-around">
+        <div class="d-flex flex-column justify-content-center">
+          <p>From This</p>
+        </div>
+        <img src="{% static 'SearchTracker/images/icons/drone-male.png' %}" alt="Male Drone Icon">
+        {% include "SearchTracker/components/svg/arrow-right.html" %}
+        <img src="{% static 'SearchTracker/images/icons/engineer.png' %}" alt="Engineer Icon">
+        <div class="d-flex flex-column justify-content-center">
+          <p>To This</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="row mb-3 centered">
+    <p class="p-body">
+      EmPath, short for <i>Employment Pathway</i>, is a cross-platform desktop program for keeping track of a Software
+      Engineer's job applications. We don't guarantee that you will become a <i>Transcend</i>, but we can at least
+      help you on <i>your</i> Employment Pathway to become a gainfully-employed and productive code monkey for a startup
+      or maybe even <i>Morgan Polysoft</i>. The program calculates weekly job search KPIs which are displayed in the
+      <strong>Dashboard</strong>. <strong>Applications</strong>, <strong>Documents</strong>, and <strong>Contacts</strong>
+      are viewed in their correspoinding windows. Some actions are also performed on the <strong>Admin Panel</strong>.
+    </p>
+    <button class="h3-section" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse">Dashboard - KPIs</button>
+    <div class="collapse" id="dashboard-collapse">
+      <ul>
+        <li>Job Offers</li>
+        <li>Take Home Assignments Received / Completed</li>
+        <li>Job Interviews Scheduled / Held</li>
+        <li>Follow Up Actions Taken</li>
+        <li>Applications Submitted</li>
+        <li>Cover Letters Written</li>
+        <li>Informational Interviews Scheduled / Held</li>
+        <li>New Contacts</li>
+        <li>Coding Challenge Goals Met</li>
+        <li>etc.</li>
+      </ul>
+    </div>
+    <button class="h3-section" data-bs-toggle="collapse" data-bs-target="#applications-collapse">Applications</button>
+    <div class="collapse" id="applications-collapse">
+      <p class="p-body">Applications are shown here with the following associated data:</p>
+      <ul>
+        <li>Position Title</li>
+        <li>Employer</li>
+        <li>Location(s)</li>
+        <li>Requistion Number</li>
+        <li>Link to Original Job Posting</li>
+        <li>Description</li>
+        <li>Minimum Payment</li>
+        <li>Maximum Payment</li>
+        <li>Payment Period</li>
+        <li>Date Sourced</li>
+        <li>Date Applied</li>
+        <li>Status</li>
+        <li>Resume</li>
+        <li>Additional Notes</li>
+      </ul>
+    </div>
+    <button class="h3-section" data-bs-toggle="collapse" data-bs-target="#documents-collapse">Documents</button>
+    <div class="collapse" id="documents-collapse">
+      <ul>
+        <li>Resumes</li>
+        <li>Cover Letters</li>
+        <li>Snippets for copy-pasting into online forms</li>
+      </ul>
+    </div>
+    <p class="p-body collapse" id="contacts-collapse">
+      Rate contacts based on their helpfulness in your job search. All start out by deafault as <i>Workers</i>,
+      but if they are insightful in an informational interview, you can set their status to <i>Engineer</i>, or if they
+      are taking serious efforts to help you land the position, you can promote them to an <i>Empath</i>. Not so helpful?
+      Then label them a <i>Drone</i>. If they try to scam you, then <i>Nerve Staple</i> them. You may be a <i>Drone</i>
+      yourself right now, but don't let that stop you from engaging in a little catharsis as you dream of becoming the next
+      faction leader.
+    </p>
+    <button class="h3-section" data-bs-toggle="collapse" data-bs-target="#admin-panel-collapse">Admin Panel</button>
+    <p class="p-body collapse" id="admin-panel-collapse">
+      EmPath is built with Python, Django, and FlaskWebGUI. As such, the user has access to Django's built-in
+      <strong>Admin Panel</strong>. Some CRUD operations may be performed there; others may be performed on the
+      appropriate window.
+    </p>
+  </div>
+</div>
+{% endblock %}
