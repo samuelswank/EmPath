@@ -4,7 +4,9 @@ from django.views.generic import DetailView, ListView, TemplateView
 from .models import Contact, Document, Snippet
 from .filters import ContactFilter
 from django.shortcuts import redirect, render
-from django.http import Http404, HttpResponse
+from django.views.decorators.http import require_http_methods
+from django.urls import reverse_lazy
+from django.http import Http404, HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import webbrowser
 import os
@@ -145,14 +147,33 @@ def documents(request):
     })
 
 
+@require_http_methods(["POST"])
+def change_contact_icon(request, pk):
+    try:
+        contact = Contact.objects.get(pk=pk)
+        if request.method == "POST":
+            new_citizen_type = request.POST.get("citizen-type")
+            print(new_citizen_type)
+            contact.citizen_type = new_citizen_type
+            if contact.citizen_type in citizen_type_options:
+                contact.save()
+                return JsonResponse({"success": True, "redirect_url": reverse_lazy(f"{APP_NAME}:contacts")})
+
+            else:
+                return JsonResponse({"success": False, "error": f"Invalid request: {new_citizen_type} not a valid citizen type"}, status=400)
+
+    except Contact.DoesNotExist:
+        raise Http404(f"Contact with id={pk} does not exist")
+
+
 def delete_snippet(request, pk):
     try:
-        template_snippet = Snippet.objects.get(pk=pk)
+        snippet = Snippet.objects.get(pk=pk)
         if request.method == "POST":
-            template_snippet.delete()
+            snippet.delete()
             return redirect(f"{APP_NAME}:documents")
     except Snippet.DoesNotExist:
-        raise Http404(f"Template Snippet with id={pk} does not exist")
+        raise Http404(f"Snippet with id={pk} does not exist")
 
 # utility views
 

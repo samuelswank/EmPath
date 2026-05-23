@@ -73,3 +73,8 @@
   text-indent: 1rem;
   list-style: none;
 }
+
+img {
+  width: 15%;
+  height: auto;
+}
