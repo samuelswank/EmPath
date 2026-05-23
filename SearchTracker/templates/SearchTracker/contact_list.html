@@ -7,51 +7,52 @@
 <link rel="stylesheet" href="{% static 'SearchTracker/styles/modal.css' %}">
 {% endblock %}
 {% block body %}
-<h1 class="text-center">Contacts</h1>
-<div class="d-flex justify-content-end align-items-center">
-  <a class="a-button" href="{{ add_url }}">Add</a>
-</div>
-<table class="table table-dark mb-2">
-  {% if contacts %}
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Primary Contact Method</th>
-      <th></th>
-      <th>Update</th>
-      <th>Delete</th>
-    </tr>
-  </thead>
-  {% endif %}
-  <tbody>
-    {% for contact in contacts %}
-    <tr>
-      <td>
-        <a id="contact-name-{{ contact.pk }}" href="{{ contact.slug }}">
-          {{ contact.surname }},
-          {{ contact.given_name }}
-        </a>
-      </td>
-      <td>
-        {% include "SearchTracker/components/primary-contact.html" with contact=contact %}
-      </td>
-      <td>
-        {% include "SearchTracker/components/contact-img.html" with contact=contact contact_types=contact_types img_class="table-icon" %}
-      </td>
-      <td>
-        <a class="a-button a-button-update" href="/admin/SearchTracker/contact/{{ contact.pk }}/change">
-          Update
-        </a>
-      </td>
-      <td><a id="delete-contact-{{ contact.pk }}" class="a-button a-button-delete" href="">Delete</a></td>
-    </tr>
-    {% empty %}
-    <tr>
-      <td colspan="100">You have yet to add or nerve-staple anyone.</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<div class="col-10 mx-auto">
+  <h1 class="text-center">Contacts</h1>
+  <div class="d-flex justify-content-end align-items-center">
+    <a class="a-button" href="{{ add_url }}">Add</a>
+  </div>
+  <table class="table table-dark mb-2">
+    {% if contacts %}
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Primary Contact Method</th>
+        <th></th>
+        <th>Update</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    {% endif %}
+    <tbody>
+      {% for contact in contacts %}
+      <tr>
+        <td>
+          <a id="contact-name-{{ contact.pk }}" href="{{ contact.slug }}">
+            {{ contact.surname }},
+            {{ contact.given_name }}
+          </a>
+        </td>
+        <td>
+          {% include "SearchTracker/components/primary-contact.html" with contact=contact %}
+        </td>
+        <td>
+          {% include "SearchTracker/components/contact-img.html" with contact=contact contact_types=contact_types img_class="table-icon" %}
+        </td>
+        <td>
+          <a class="a-button a-button-update" href="/admin/SearchTracker/contact/{{ contact.pk }}/change">
+            Update
+          </a>
+        </td>
+        <td><a id="delete-contact-{{ contact.pk }}" class="a-button a-button-delete" href="">Delete</a></td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="100">You have yet to add or nerve-staple anyone.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 {% endblock %}
 
