@@ -97,3 +97,7 @@ button {
 .a-button-delete:active {
   background-color: var(--background-color-button-delete-light);
 }
+
+.p-fine-print {
+  font-size: 10px;
+}
