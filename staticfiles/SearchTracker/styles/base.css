@@ -101,3 +101,8 @@ button {
 .p-fine-print {
   font-size: 10px;
 }
+
+.icon-close {
+  width: 32px;
+  height: auto;
+}

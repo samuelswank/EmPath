@@ -151,6 +151,25 @@ class Snippet(TimeStampedModel):
         return self.name
 
 
+class ContactIcon(TimeStampedModel):
+    class SexOptions(Enum):
+        MALE = "Male"
+        FEMALE = "Female"
+        EITHER = "Either"
+
+        @classmethod
+        def choices(self):
+            return [(key.value, key.name) for key in self]
+
+    icon_name = models.CharField(max_length=64)
+    icon_file = models.CharField(max_length=64)
+    icon_sex = models.CharField(
+        max_length=8, choices=SexOptions.choices(), default=SexOptions.EITHER)
+
+    def __str__(self):
+        return self.icon_name
+
+
 class Contact(TimeStampedModel):
     class SexOptions(Enum):
         MALE = "Male"
@@ -209,8 +228,8 @@ class Contact(TimeStampedModel):
     primary_contact = models.CharField(max_length=200)
     contact_method = models.CharField(
         max_length=8, choices=ContactMethodOptions.choices())
-    citizen_type = models.CharField(
-        max_length=16, choices=CitizenClassOptions.choices(), default=CitizenClassOptions.WORKER)
+    contact_icon = models.ForeignKey(
+        ContactIcon, blank=True, null=True, on_delete=models.CASCADE)
 
     slug = models.SlugField(default='', blank=True, null=False)
 
