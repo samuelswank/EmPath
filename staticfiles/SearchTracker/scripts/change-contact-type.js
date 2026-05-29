@@ -72,7 +72,7 @@ $(() => {
                         <div id="icon-grid" class="icon-grid"></div>
                     </div>
                     <div class="modal-footer d-flex justify-content-between">
-                        <button type="button" class="a-button" data-bs-dismiss="modal">Close</button>
+                        <button type="button" id="modal-close-button" class="a-button" data-bs-dismiss="modal">Close</button>
                         <button id="change-button" type="button" class="a-button a-button-update" href="">Change</button>
                     </div>
                 </form>
@@ -89,63 +89,9 @@ $(() => {
     modal.show();
 
     $("#modal-element").on("hidden.bs.modal", () => {
-      audio.pause();
-      audio.currentTime = 0;
-      audioPlaying = false;
+      audioPlaying = stopAudio(audio);
       $(this).remove();
     });
-
-    // const citizenTypeOptions = JSON.parse(
-    //   document.getElementById("citizen-type-options").textContent,
-    // );
-
-    // const contactTypeSelect = $("#contact-type").first();
-
-    // if (contactTypeSelect.children().length < citizenTypeOptions.length) {
-    //   for (let i = 0; i < citizenTypeOptions.length; ++i) {
-    //     const optionValue = citizenTypeOptions[i];
-    //     const selected = optionValue === citizenType;
-
-    //     const newOption = `
-    //     <option id="opt-${i}" value="${optionValue}">
-    //         ${optionValue}
-    //     </option>
-    //     `;
-    //     contactTypeSelect.append(newOption);
-    //   }
-    // }
-
-    // contactTypeSelect.val(citizenType);
-
-    // contactTypeSelect.on("change", (event) => {
-    //   const selectedText = $(event.target).val();
-
-    //   const audioFileArray = selectedText.toLowerCase().split(" ");
-
-    //   let audioFile = "";
-    //   for (substring of audioFileArray) {
-    //     audioFile += substring + "-";
-    //   }
-
-    //   audioFile = audioFile.substring(0, audioFile.length - 1);
-    //   audioFile += ".mp3";
-
-    //   if (audioPlaying) {
-    //     audio.pause();
-    //     audio.currentTime = 0;
-    //   } else {
-    //     try {
-    //       audio.src = `${window.location.origin}/static/SearchTracker/audio/${audioFile}`;
-    //       audio.play();
-    //       audioPlaying = true;
-    //       audio.onended = () => {
-    //         audioPlaying = false;
-    //       };
-    //     } catch (err) {
-    //       console.log(err);
-    //     }
-    //   }
-    // });
 
     const gridContainer = $("#icon-grid");
     let selectedIconId = citizenType.id;
@@ -202,25 +148,17 @@ $(() => {
 
           audioSrc += ".mp3";
 
-          audio.pause();
-          audio.currentTime = 0;
-          audioPlaying = false;
+          audioPlaying = stopAudio(audio);
 
           try {
-            audio.src = audioSrc;
-            audio.play();
-            audioPlaying = true;
+            audioPlaying = startAudio(audio, audioSrc);
             audio.onended = () => {
               audioPlaying = false;
             };
           } catch (err) {
             console.log(err);
           }
-        } else {
-          audio.pause();
-          audio.currentTime = 0;
-          audioPlaying = false;
-        }
+        } else audioPlaying = stopAudio(audio);
       });
 
       gridContainer.append(card);
@@ -231,6 +169,14 @@ $(() => {
 
     changeButton.on("click", (event) => {
       event.preventDefault();
+
+      let isSubmitting = true;
+
+      const preventHide = (modalEvent) => {
+        if (isSubmitting) modalEvent.preventDefault();
+      };
+
+      modalElement.addEventListener("hide.bs.modal", preventHide);
 
       const formData = new URLSearchParams();
       formData.append("icon-id", selectedIconId);
@@ -246,8 +192,51 @@ $(() => {
         .then((response) => response.json())
         .then((data) => {
           if (data.success) {
-            console.log(data.redirect_url);
-            window.location.href = data.redirect_url;
+            const closeModalX = $(".btn-close");
+            const closeModalButton = $("#modal-close-button");
+            closeModalX.prop("disabled", true);
+            closeModalButton.prop("disabled", true);
+            changeButton.prop("disabled", true);
+
+            const selectedName = $(".icon-card.selected > .icon-name")
+              .first()
+              .text();
+
+            let audioSrc = `${window.location.origin}/static/SearchTracker/audio/`;
+
+            if (selectedName.toLowerCase().includes("rioting drone")) {
+              audioPlaying = stopAudio(audio);
+              audioPlaying = startAudio(
+                audio,
+                `${audioSrc}contacts/drone-riots.mp3`,
+              );
+
+              refresh(data.redirect_url, 650);
+            } else if (selectedName.toLowerCase().includes("nerve staple")) {
+              audioPlaying = stopAudio(audio);
+
+              if (citizenSex.trim() === "Male")
+                audioPlaying = startAudio(
+                  audio,
+                  `${audioSrc}contacts/male/nerve-stapled-male.mp3`,
+                );
+              else
+                audioPlaying = startAudio(
+                  audio,
+                  `${audioSrc}contacts/female/nerve-stapled-female.mp3`,
+                );
+
+              refresh(data.redirect_url, 5200);
+            } else if (selectedName.toLowerCase().includes("thinker")) {
+              audioPlaying = startAudio(
+                audio,
+                `${audioSrc}contacts/male/jc-helios-merging.mp3`,
+              );
+              refresh(data.redirect_url, 3200);
+            } else if (selectedName.toLowerCase().includes("transcend")) {
+              audioPlaying = startAudio(audio, `${audioSrc}transcendence.mp3`);
+              refresh(data.redirect_url, 55000);
+            } else refresh(data.redirect_url);
           }
         })
         .catch((err) => {
@@ -258,4 +247,24 @@ $(() => {
         });
     });
   });
+
+  function startAudio(audioObj, src) {
+    audioObj.src = src;
+    audioObj.play();
+    return true;
+  }
+
+  function stopAudio(audioObj) {
+    audioObj.pause();
+    audioObj.currentTime = 0;
+    return false;
+  }
+
+  function refresh(url, timeout) {
+    if (timeout)
+      setTimeout(() => {
+        window.location.href = url;
+      }, timeout);
+    else window.location.href = url;
+  }
 });

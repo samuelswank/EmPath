@@ -25,6 +25,10 @@ img:active {
   filter: invert(1) grayscale(100%) brightness(200%);
 }
 
+.btn-close:disabled {
+  display: none;
+}
+
 .icon-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
