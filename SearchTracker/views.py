@@ -141,23 +141,20 @@ def documents(request):
         "add_document_url": f"{ADMIN_PREFIX}document/add/",
         "snippets": Snippet.objects.all(),
         "snippets_count": Snippet.objects.count(),
-        "add_snippet_url": f"{ADMIN_PREFIX}templatesnippet/add/",
+        "add_snippet_url": f"{ADMIN_PREFIX}snippet/add/",
     })
 
 
 @require_http_methods(["POST"])
 def change_contact_icon(request, pk):
     contact = get_object_or_404(Contact, pk=pk)
-    print(contact)
 
     icon_id = request.POST.get("icon-id")
-    print(icon_id)
     if not icon_id:
         return JsonResponse({"success": False, "error": "Missing icon_id"}, status=400)
 
     try:
         new_icon = ContactIcon.objects.get(pk=icon_id)
-        print(new_icon)
     except ContactIcon.DoesNotExist:
         return JsonResponse({"success": False, "error": "Invalid icon ID"}, status=400)
 
