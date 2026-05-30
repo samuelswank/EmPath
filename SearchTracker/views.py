@@ -1,10 +1,11 @@
 # import time
 # import threading
 from django.views.generic import DetailView, ListView, TemplateView
-from .models import Contact, Document, Snippet
+from .models import Contact, ContactIcon, Document, Snippet
 from .filters import ContactFilter
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_http_methods
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.http import Http404, HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -24,26 +25,26 @@ AUDIO_PREFIX = f"{APP_NAME}/audio/"
 
 # variables
 
-contact_types = {
-    "Doctor": {"Male": f"{ICONS_PREFIX}doctor.png"},
-    "Drone": {"Female": f"{ICONS_PREFIX}drone-female.png", "Male": f"{ICONS_PREFIX}drone-male.png"},
-    "Empath": {"Female": f"{ICONS_PREFIX}empath.png"},
-    "Engineer": {"Male": f"{ICONS_PREFIX}engineer.png", "Female": f"{ICONS_PREFIX}engineer.png"},
-    "Librarian": {"Male": f"{ICONS_PREFIX}librarian.png"},
-    "Talent": {"Female": f"{ICONS_PREFIX}talent-female.png", "Male": f"{ICONS_PREFIX}talent-male.png"},
-    "Technician": {"Male": f"{ICONS_PREFIX}technician.png", "Female": f"{ICONS_PREFIX}technician.png"},
-    "Thinker": {"Male": f"{ICONS_PREFIX}thinker.png"},
-    "Transcend": {"Male": f"{ICONS_PREFIX}transcend.png", "Female": f"{ICONS_PREFIX}transcend.png"},
-    "Worker": {"Female": f"{ICONS_PREFIX}worker-female.png", "Male": f"{ICONS_PREFIX}worker-male.png"}
-}
+# contact_types = {
+#     "Doctor": {"Male": f"{ICONS_PREFIX}doctor.png"},
+#     "Drone": {"Female": f"{ICONS_PREFIX}drone-female.png", "Male": f"{ICONS_PREFIX}drone-male.png"},
+#     "Empath": {"Female": f"{ICONS_PREFIX}empath.png"},
+#     "Engineer": {"Male": f"{ICONS_PREFIX}engineer.png", "Female": f"{ICONS_PREFIX}engineer.png"},
+#     "Librarian": {"Male": f"{ICONS_PREFIX}librarian.png"},
+#     "Talent": {"Female": f"{ICONS_PREFIX}talent-female.png", "Male": f"{ICONS_PREFIX}talent-male.png"},
+#     "Technician": {"Male": f"{ICONS_PREFIX}technician.png", "Female": f"{ICONS_PREFIX}technician.png"},
+#     "Thinker": {"Male": f"{ICONS_PREFIX}thinker.png"},
+#     "Transcend": {"Male": f"{ICONS_PREFIX}transcend.png", "Female": f"{ICONS_PREFIX}transcend.png"},
+#     "Worker": {"Female": f"{ICONS_PREFIX}worker-female.png", "Male": f"{ICONS_PREFIX}worker-male.png"}
+# }
 
-citizen_type_options_raw = Contact._meta.get_field(
-    "citizen_type").__dict__["_choices"]
+# citizen_type_options_raw = Contact._meta.get_field(
+#     "citizen_type").__dict__["_choices"]
 
-citizen_type_options = []
+# citizen_type_options = []
 
-for citizen_type in citizen_type_options_raw:
-    citizen_type_options.append(citizen_type[0])
+# for citizen_type in citizen_type_options_raw:
+#     citizen_type_options.append(citizen_type[0])
 
 # utility vars
 # _last_heartbeat = time.time()
@@ -111,8 +112,6 @@ class ContactListView(FilteredListView):
         context = super().get_context_data(**kwargs)
 
         context["add_url"] = f"{ADMIN_PREFIX}contact/add/"
-        context["contact_types"] = contact_types
-        context["citizen_type_options"] = citizen_type_options
         context["AUDIO_URL_PREFIX"] = AUDIO_PREFIX
 
         return context
@@ -126,7 +125,6 @@ class ContactDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["contact_types"] = contact_types
 
         return context
 
@@ -143,27 +141,27 @@ def documents(request):
         "add_document_url": f"{ADMIN_PREFIX}document/add/",
         "snippets": Snippet.objects.all(),
         "snippets_count": Snippet.objects.count(),
-        "add_snippet_url": f"{ADMIN_PREFIX}templatesnippet/add/",
+        "add_snippet_url": f"{ADMIN_PREFIX}snippet/add/",
     })
 
 
 @require_http_methods(["POST"])
 def change_contact_icon(request, pk):
+    contact = get_object_or_404(Contact, pk=pk)
+
+    icon_id = request.POST.get("icon-id")
+    if not icon_id:
+        return JsonResponse({"success": False, "error": "Missing icon_id"}, status=400)
+
     try:
-        contact = Contact.objects.get(pk=pk)
-        if request.method == "POST":
-            new_citizen_type = request.POST.get("citizen-type")
-            print(new_citizen_type)
-            contact.citizen_type = new_citizen_type
-            if contact.citizen_type in citizen_type_options:
-                contact.save()
-                return JsonResponse({"success": True, "redirect_url": reverse_lazy(f"{APP_NAME}:contacts")})
+        new_icon = ContactIcon.objects.get(pk=icon_id)
+    except ContactIcon.DoesNotExist:
+        return JsonResponse({"success": False, "error": "Invalid icon ID"}, status=400)
 
-            else:
-                return JsonResponse({"success": False, "error": f"Invalid request: {new_citizen_type} not a valid citizen type"}, status=400)
+    contact.contact_icon = new_icon
+    contact.save()
 
-    except Contact.DoesNotExist:
-        raise Http404(f"Contact with id={pk} does not exist")
+    return JsonResponse({"success": True, "redirect_url": reverse_lazy(f"{APP_NAME}:contacts")})
 
 
 def delete_snippet(request, pk):

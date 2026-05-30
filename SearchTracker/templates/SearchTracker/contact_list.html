@@ -4,7 +4,6 @@
 {% block styles %}
 <link rel="stylesheet" href="{% static 'SearchTracker/styles/contact.css' %}">
 <link rel="stylesheet" href="{% static 'SearchTracker/styles/table.css' %}">
-<link rel="stylesheet" href="{% static 'SearchTracker/styles/modal.css' %}">
 {% endblock %}
 {% block body %}
 <div class="col-10 mx-auto">
@@ -37,7 +36,7 @@
           {% include "SearchTracker/components/primary-contact.html" with contact=contact %}
         </td>
         <td>
-          {% include "SearchTracker/components/contact-img.html" with contact=contact contact_types=contact_types img_class="table-icon" %}
+          {% include "SearchTracker/components/contact-img.html" with contact=contact img_class="table-icon" %}
         </td>
         <td>
           <a class="a-button a-button-update" href="/admin/SearchTracker/contact/{{ contact.pk }}/change">
@@ -57,11 +56,6 @@
 {% endblock %}
 
 {% block scripts %}
-
-{% include "SearchTracker/components/jquery.html" %}
 {% include "SearchTracker/components/contact-scripts.html" %}
-
-{{ citizen_type_options|json_script:"citizen-type-options" }}
 <script type="text/javascript" src="{% static 'SearchTracker/scripts/change-contact-type.js' %}"></script>
-
 {% endblock %}

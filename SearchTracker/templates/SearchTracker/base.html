@@ -10,6 +10,7 @@
   <title>EmPath {% block title %}{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'SearchTracker/styles/base.css' %}">
   <link rel="stylesheet" href="{% static 'SearchTracker/styles/sidebar.css' %}">
+  <link rel="stylesheet" href="{% static 'SearchTracker/styles/modal.css' %}">
   {% block styles %}{% endblock %}
 </head>
 
@@ -26,6 +27,8 @@
     </div>
   </main>
   {% bootstrap_javascript %}
+  {% include "SearchTracker/components/jquery.html" %}
+  <script type="text/javascript" src="{% static 'SearchTracker/scripts/close.js' %}"></script>
   {% block scripts %}{% endblock %}
 </body>
 

@@ -1,12 +1,12 @@
-{% load dictionary_template_filters %}
 {% load static %}
-
-{% with type_dict=contact_types|get_item:contact.citizen_type %}
-{% if type_dict %}
-{% with icon_path=type_dict|get_item:contact.sex %}
-<img id="contact-img-{{ contact.pk }}" class="{{ img_class }}" src="{% static icon_path %}" alt="Icon for {{ contact.citizen_type }} and {{ contact.sex }}">
+{% if contact.contact_icon %}
+{% with icon_path="SearchTracker/images/icons/"|add:contact.contact_icon.icon_file|add:".png" %}
+<img id="contact-img-{{ contact.pk }}" class="{{ img_class }}" src="{% static icon_path %}" alt="Icon for {{ contact.contact_icon.icon_name }}">
 {% endwith %}
 {% else %}
-<img class="{{ img_class }}" src="{% static 'SearchTracker/images/icons/worker-male.png' %}" alt="No icon for {{ contact.citizen_type }}" />
+{% if contact.sex == "male" %}
+<img class="{{ img_class }}" src="{% static 'SearchTracker/images/icons/worker-male.png' %}" alt="Icon for a male worker" />
+{% else %}
+<img class="{{ img_class }}" src="{% static 'SearchTracker/images/icons/worker-female.png' %}" alt="Icon for a male worker" />
 {% endif %}
-{% endwith %}
+{% endif %}
