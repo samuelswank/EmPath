@@ -1,0 +1,34 @@
+{% extends "SearchTracker/base.html" %}
+{% load static %}
+{% block title %}
+- Document:
+
+{{ document }}
+
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'SearchTracker/styles/document-details.css' %}">
+{% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-center text-center resume-body">
+  <div class="w-50">
+    <h1 class="mb-5">
+      {{ document }}
+    </h1>
+    <iframe id="pdf-frame" src="{% url 'SearchTracker:display_pdf' filename=filename %}" frameborder="0"></iframe>
+    <p class="mb-5">
+      <a id="open-pdf" class="link-color" href="/">Click here</a> to view the resume full page.
+    </p>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% include "SearchTracker/components/open-browser.html" %}
+<script type="text/javascript">
+  window.PDF_URL = "{% url 'SearchTracker:display_pdf' filename=filename %}"
+</script>
+<script type=" text/javascript" src="{% static 'SearchTracker/scripts/open-pdf.js' %}"></script>
+{% endblock %}

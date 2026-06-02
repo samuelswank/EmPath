@@ -1,5 +1,6 @@
 from django.db import models
 from enum import Enum
+import os
 from tinymce.models import HTMLField
 from django.utils.html import strip_tags
 from django.template.defaultfilters import slugify
@@ -41,9 +42,6 @@ class Title(TimeStampedModel):
     max_salary = models.DecimalField(
         max_digits=8, decimal_places=2, blank=True, null=True)
 
-    resumes_for_title = models.ManyToManyField(
-        "ResumeTitle", related_name="resumes_for_title", blank=True)
-
     def __str__(self):
         return self.title
 
@@ -59,15 +57,18 @@ class Document(TimeStampedModel):
             return [(key.value, key.name) for key in self]
 
     name = models.CharField(max_length=128)
-    file = models.FileField()
+    file = models.FileField(upload_to="SearchTracker/files/pdfs/")
     document_type = models.CharField(
         max_length=16, choices=DocumentTypeOptions.choices(), default=DocumentTypeOptions.RESUME)
 
-    resume_title = models.ManyToManyField(
-        "ResumeTitle", related_name="resume_title")
+    resume_title = models.ForeignKey(
+        Title, related_name="resume_title", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
+
+    def get_filename(self):
+        return os.path.basename(self.file.name)
 
 
 class JobApplication(TimeStampedModel):
@@ -256,14 +257,6 @@ class Location(TimeStampedModel):
 
     def __str__(self):
         return self.location_name
-
-
-class ResumeTitle(TimeStampedModel):
-    resume = models.ForeignKey(Document, on_delete=models.CASCADE)
-    title = models.ForeignKey(Title, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.resume}, {self.title}"
 
 
 class JobApplicationLocation(TimeStampedModel):
