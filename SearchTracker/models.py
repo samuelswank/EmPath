@@ -234,11 +234,6 @@ class Contact(TimeStampedModel):
 
     slug = models.SlugField(default='', blank=True, null=False)
 
-    employers = models.ManyToManyField(
-        Employer, related_name="contact_employers", blank=True)
-    job_titles = models.ManyToManyField(
-        Title, related_name="contact_job_titles", blank=True)
-
     def __str__(self):
         return f"{self.surname}, {self.given_name}"
 
@@ -269,7 +264,8 @@ class JobApplicationLocation(TimeStampedModel):
 
 
 class ContactEmployerTitle(TimeStampedModel):
-    contact = models.ForeignKey(Contact, on_delete=models.CASCADE)
+    contact = models.ForeignKey(
+        Contact, related_name="employment_history", on_delete=models.CASCADE)
     employer = models.ForeignKey(Employer, on_delete=models.CASCADE)
     title = models.ForeignKey(
         Title, on_delete=models.CASCADE, blank=True, null=True)
