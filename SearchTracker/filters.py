@@ -5,10 +5,16 @@ from .models import Contact
 class ContactFilter(django_filters.FilterSet):
     class Meta:
         model = Contact
-        fields = ("surname", "given_name", "employers", "job_titles")
+        fields = ("given_name", "surname",)
 
-    employers = django_filters.CharFilter(
-        "employer__name", lookup_expr="icontains", label="Employer")
+    given_name = django_filters.CharFilter(
+        "given_name", lookup_expr="icontains", label="Given Name")
+
+    surname = django_filters.CharFilter(
+        "surname", lookup_expr="icontains", label="Surname")
+
+    employment_history = django_filters.CharFilter(
+        "employment_history__employer__name", lookup_expr="icontains", label="Employer")
 
     job_titles = django_filters.CharFilter(
-        "title__title", lookup_expr="icontains", label="Job Title")
+        "employment_history__title__title", lookup_expr="icontains", label="Job Title")

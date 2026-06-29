@@ -1,0 +1,16 @@
+ {% load static %}
+ <form id="filterset-form" class="form" method="get">
+   {{ filterset.form }}
+   <label>Controls: </label>
+   <div class="form-buttons">
+     <div class="form-buttons-vertical">
+       <a href="{% url 'SearchTracker:contacts' %}" class="a-form">Reset Page</a>
+       <button id="button-clear" class="button" type="button">Clear Form</button>
+     </div>
+     <div class="form-buttons-end">
+       <button class="button" type="submit">Filter</button>
+     </div>
+   </div>
+ </form>
+ {% include "SearchTracker/components/jquery.html" %}
+ <script type="text/javascript" src="{% static 'SearchTracker/scripts/button-clear.js' %}"></script>

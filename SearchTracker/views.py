@@ -6,6 +6,7 @@ from django.views.decorators.http import require_http_methods
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.http import Http404, FileResponse, HttpResponse, JsonResponse
+from .api.urls import urlpatterns as api_urls
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
@@ -123,6 +124,27 @@ def delete_snippet(request, pk):
             return redirect(f"{APP_NAME}:documents")
     except Snippet.DoesNotExist:
         raise Http404(f"Snippet with id={pk} does not exist")
+
+
+def admin_api(request):
+    api_urls_processed = []
+
+    for api_url in api_urls:
+        api_url_processed = {
+            "name": api_url.name,
+            "pattern": api_url.pattern.__str__(),
+            "full_url_name": f"api:{api_url.name}"
+        }
+
+        api_url.full_url_name = f"api:{api_url.name}"
+
+        additional_args_conditions = '<' in api_url.pattern.__str__(
+        ) or '>' in api_url.pattern.__str__()
+
+        api_url_processed["additional_args"] = additional_args_conditions
+        api_urls_processed.append(api_url_processed)
+
+    return render(request, f"{APP_NAME}/admin-api.html", {"api_urls": api_urls_processed})
 
 # utility views
 

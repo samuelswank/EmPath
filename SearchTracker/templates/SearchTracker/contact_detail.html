@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="{% static 'SearchTracker/styles/table.css' %}">
+<link rel="stylesheet" href="{% static 'SearchTracker/styles/contact-detail.css' %}">
 {% endblock %}
 {% block body %}
 <div class="text-center mb-5">
@@ -21,7 +21,7 @@
   <div class="col-8 mx-auto">
     <div class="d-flex flex-row justify-content-around">
       <div class="d-flex flex-column justify-content-center">
-        {% include "SearchTracker/components/contact-img.html" with contact_types=contact_types %}
+        {% include "SearchTracker/components/contact-img.html" with contact_types=contact_types img_class="contact-icon" %}
       </div>
       <div class="d-flex flex-column justify-content-center">
         <p>
@@ -31,10 +31,39 @@
     </div>
   </div>
 </div>
+<div class="row mt-3">
+  <div class="contact-details mt-2">
+    <ul class="employment-list">
+      {% for job in contact.employment_history.all %}
+      <li>
+        <a class="employer-link" href="/">
+          <strong>
+            {{ job.employer.name }}
+          </strong>
+        </a>
+
+        -
+        <a class="title-link" href="/">
+          {{ job.title.title }}
+        </a>
+        &nbsp;
+
+        {% if job.current %}
+        <span class="current-badge">(Current)</span>
+        {% endif %}
+      </li>
+      {% empty %}
+      <li>No employment history recorded.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
 {% endblock %}
 
-{% if contact_method != "Phone" and contact_method != "Email" %}
+
 {% block scripts %}
-{% include "SearchTracker/components/contact-scripts.html" %}
-{% endblock %}
+{% if contact_method != "Phone" and contact_method != "Email" %}
+{% include "SearchTracker/components/open-browser.html" %}
 {% endif %}
+<script type="text/javascript" src="{% static 'SearchTracker/scripts/contact-filter-link.js' %}"></script>
+{% endblock %}
