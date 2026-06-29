@@ -32,7 +32,7 @@ $(() => {
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="a-button" data-bs-dismiss="modal">Close</button>
-                    <form action="/template-snippets/delete/id=${recordId}" method="post">
+                    <form action="/${recordType}/delete/id=${recordId}" method="post">
                         <input type="hidden" name="csrfmiddlewaretoken" value="${csrftoken}"></input>
                         <button id="delete" type="submit" class="a-button a-button-delete" href="">Delete</button>
                     </form>
@@ -48,6 +48,10 @@ $(() => {
     const modal = new bootstrap.Modal(modalElement);
 
     modal.show();
+
+    $("#modal-element").on("hidden.bs.modal", () => {
+      $(this).remove();
+    });
 
     const audio = new Audio(window.DELETE_AUDIO_PATH);
     audio.play();

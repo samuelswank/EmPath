@@ -16,6 +16,7 @@ urlpatterns = [
     path("contacts/id=<int:pk>/icon/change/",
          views.change_contact_icon, name="change_contact_icon"),
     path("contacts/<slug>", views.ContactDetailView.as_view(), name="contact_detail"),
+    path("admin-api/", views.admin_api, name="admin_api"),
     # path("heartbeat/", views.heartbeat, name="heartbeat"),
     path("open-browser/", views.open_browser, name="open_browser"),
     path("close/", views.close, name="close"),
