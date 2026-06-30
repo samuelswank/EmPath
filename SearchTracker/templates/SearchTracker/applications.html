@@ -1,0 +1,26 @@
+{% extends "SearchTracker/base.html" %}
+{% load static %}
+{% block title %} - Applications{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'SearchTracker/styles/table.css' %}">
+<link rel="stylesheet" href="{% static 'SearchTracker/styles/dataTables/dataTables.css' %}">
+<link rel="stylesheet" href="{% static 'SearchTracker/styles/x-editable/bootstrap-editable.css' %}">
+{% endblock %}
+{% block body %}
+<h1 class="text-center">Applications</h1>
+<div class="row mt-5">
+  <div class="col-10 mx-auto">
+    <table id="applications-table" class="table table-dark mb-2">
+      {% csrf_token %}
+      <thead></thead>
+      <tbody id="applications-tbody"></tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="{% static 'SearchTracker/scripts/applications.js' %}"></script>
+{% include "SearchTracker/components/open-browser.html" %}
+<script type="text/javascript" src="{% static 'SearchTracker/scripts/dataTables/dataTables.js' %}"></script>
+<script type="text/javascript" src="{% static 'SearchTracker/scripts/x-editable/bootstrap-editable.js' %}"></script>
+{% endblock %}

@@ -116,8 +116,7 @@ class JobApplication(TimeStampedModel):
         Document, on_delete=models.CASCADE, blank=True, null=True)
     notes = HTMLField()
 
-    job_application_location = models.ManyToManyField(
-        "JobApplicationLocation", related_name="job_application_location")
+    location = models.ForeignKey("Location", on_delete=models.CASCADE)
 
     def __str__(self):
         title = self.position_title
@@ -248,19 +247,11 @@ class Location(TimeStampedModel):
     line1 = models.CharField(max_length=32, blank=True, null=True)
     line2 = models.CharField(max_length=32, blank=True, null=True)
     city = models.CharField(max_length=128, blank=True, null=True)
+    zip_code = models.CharField(max_length=10, blank=True, null=True)
     country = models.CharField(max_length=64, blank=True, null=True)
 
     def __str__(self):
         return self.location_name
-
-
-class JobApplicationLocation(TimeStampedModel):
-    job_application = models.ForeignKey(
-        JobApplication, on_delete=models.CASCADE)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.job_application}, {self.location}"
 
 
 class ContactEmployerTitle(TimeStampedModel):
