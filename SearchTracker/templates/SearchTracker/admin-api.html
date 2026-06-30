@@ -29,7 +29,7 @@
           </td>
           <td>
             {% if not api_url.additional_args %}
-            <button class="api-button" onclick="openNewWindow('{% url api_url.full_url_name %}')">
+            <button class="api-button mx-4" onclick="openNewWindow('{% url api_url.full_url_name %}')">
               {{ api_url.pattern }}
             </button>
             {% else %}

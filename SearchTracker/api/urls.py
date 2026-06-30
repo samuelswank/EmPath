@@ -17,7 +17,7 @@ job_application_detail = views.JobApplicationViewSet.as_view({
 
 urlpatterns = [
     path("applications/", job_applications_list, name="applications_list"),
-    path("api/applications/id=<int:pk>/",
+    path("applications/id=<int:pk>/",
          job_application_detail, name="application_detail"),
     path("contacts/id=<int:pk>",
          views.ContactDetails.as_view(), name="contact_details"),

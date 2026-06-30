@@ -3,11 +3,23 @@
 $(document).ready(function () {
   // 1. Column definitions – status is at index 8
   const colDefs = [
-    { data: "id", visible: false },
+    {
+      data: "id",
+      render: function (data) {
+        if (!data) return "";
+        return `
+        <button 
+            class="a-button-update" 
+            onclick="openNewWindow('/admin/SearchTracker/jobapplication/${data}/change/')">
+            Edit
+        </button>
+        `;
+      },
+    },
     {
       data: "position_title",
       render: function (data) {
-        return data ? data.title : "";
+        return data && data.title ? data.title : data;
       },
     },
     {
@@ -34,7 +46,7 @@ $(document).ready(function () {
         if (!data) return "";
         var docId = data.id || data;
         var docName = data.name || data.filename || "Resume";
-        return '<a href="/documents/' + docId + '/">' + docName + "</a>";
+        return '<a href="/documents/id=' + docId + '">' + docName + "</a>";
       },
     },
   ];
@@ -106,7 +118,7 @@ $(document).ready(function () {
             ],
             value: rowData.status,
             url: function (params) {
-              return patchData(`/api/applications/${rowData.id}/`, {
+              return patchData(`/api/applications/id=${rowData.id}/`, {
                 status: params.value,
               });
             },
