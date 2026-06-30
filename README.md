@@ -1,6 +1,6 @@
 # EmPath - Employment Pathway
 
-Empath is a cross-platform desktop program for keeping track of a Software Engineer's job applications. We make no guarantees of job placement, simply to help you on yur Employment Pathway at a startup or maybe even Morgan Polysoft.
+Empath is a desktop program optimized for macOS for keeping track of a Software Engineer's job applications. We make no guarantees of job placement, simply to help you on yur Employment Pathway at a startup or maybe even Morgan Polysoft.
 
 ## Getting Started
 

@@ -52,6 +52,10 @@ class FilteredListView(ListView):
 class HomeTemplateView(TemplateView):
     template_name = f"{APP_NAME}/home.html"
 
+
+class ApplicationsTemplateView(TemplateView):
+    template_name = f"{APP_NAME}/applications.html"
+
 # ListViews
 
 

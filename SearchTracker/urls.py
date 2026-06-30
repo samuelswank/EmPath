@@ -5,6 +5,8 @@ app_name = "SearchTracker"
 
 urlpatterns = [
     path('', views.HomeTemplateView.as_view(), name="home"),
+    path("applications/", views.ApplicationsTemplateView.as_view(),
+         name="applications"),
     path("documents/", views.documents, name="documents"),
     path("documents/id=<int:pk>",
          views.DocumentDetailView.as_view(), name="document_detail"),
